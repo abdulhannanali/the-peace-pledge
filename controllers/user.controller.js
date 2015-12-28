@@ -11,11 +11,9 @@ module.exports = function () {
 
   function getLogin(req, res, next) {
     if (req.user) {
-      res.redirect("/")
+      console.log(req.user)
     }
-    else {
-      res.render("login", {})
-    }
+    res.render("login", {})
   }
 
   // authenticate and submit a login here
@@ -59,10 +57,20 @@ module.exports = function () {
     })
   }
 
+  // logouts the user if authenticated or not and redirects to the homepage
+  function userLogout(req, res, next) {
+    if (req.isAuthenticated()) {
+      req.logout()
+      req.flash("info", "You are not signed up")
+      res.redirect("/")
+    }
+  }
+
   return {
     getSignup: getSignup,
     postSignup: postSignup,
     getLogin: getLogin,
-    postLogin: postLogin
+    postLogin: postLogin,
+    userLogout: userLogout
   }
 }
