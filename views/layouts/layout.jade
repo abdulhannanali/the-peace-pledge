@@ -1,0 +1,17 @@
+html
+  head
+    block head
+    //- some stylesheets for the layout
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css")
+  body
+    // navigation bar
+    nav
+      div(class="nav-wrapper")
+        a(href="/" class="brand-logo") The Peace Pledge
+    //- page specific content
+    block content
+    //- some scripts which are essential
+    script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+    script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js")
+    // page specific scripts
+    block scripts
