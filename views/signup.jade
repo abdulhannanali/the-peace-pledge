@@ -1,4 +1,41 @@
 extends ./layouts/layout.jade
 
 block content
-  h1 Hello World
+  .row
+    .col.s12
+      h1 Sign up to the #[span(class="pink-text") peace pledge] cos #[span(class="green-text") united] we #[span(class="blue-text") stand]!
+      //- img(src="https://i.imgur.com/NNbQNx2.png" width="140" height="120")
+  .row
+    form(method="POST" action="/signup")
+      .row
+        .input-field
+          i.material-icons.prefix account_circle
+          input.validate(placeholder="Enter your name here" name="name" id="name" type="text")
+          label(for="name") Name
+        .input-field
+          i.material-icons.prefix email
+          input.validate(placeholder="Enter your email here" name="email" id="email" type="text")
+          label(for="email") Email
+      .row
+        .input-field
+          i.material-icons.prefix lock
+          input.validate(placeholder="enter your password here" name="password" id="password" type="password")
+          label(for="password") Password
+      .row
+        .input-field
+          i.material-icons.prefix insert_photo
+          input.validate(placeholder="enter the image url here" name="imageUrl" id="imageUrl" type="text")
+          label(for="imageUrl") Image Url (optional)
+      .row
+        .input-field
+          select
+            each country in countries
+              option(value="#{country.Code}")=country.Name
+          label Country
+      .row
+        button.btn.waves-effect.waves-light.orange(type="submit") I believe in peace #[i.material-icons.left favorite]
+
+
+block scripts
+  script(type="text/javascript").
+    $("select").material_select();

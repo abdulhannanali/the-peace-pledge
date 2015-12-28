@@ -6,14 +6,20 @@
 
 const User = require("../models/user")
 const passport = require('passport')
+const fs = require('fs')
+
+const countryCodes = JSON.parse(fs.readFileSync("./data/viewsData/countrycodes.json", "utf-8"))
 
 module.exports = function () {
 
+  // getting the login page
   function getLogin(req, res, next) {
-    if (req.user) {
-      console.log(req.user)
+    if (req.isAuthenticated) {
+      return res.redirect("/")
     }
-    res.render("login", {})
+    res.render("login", {
+      user: req.user
+    })
   }
 
   // authenticate and submit a login here
@@ -52,16 +58,24 @@ module.exports = function () {
 
   // controller for rendering the signup page
   function getSignup(req, res, next) {
-    res.render("signup", {
-      user: req.user
-    })
+    if (!req.isAuthenticated()) {
+      res.render("signup", {
+        user: req.user,
+        countries: countryCodes
+      })
+    }
+    else {
+      // if request is authenticated redirects to the home page
+      req.flash("info", "You are already signed up Peace Lover")
+      res.redirect("/")
+    }
   }
 
   // logouts the user if authenticated or not and redirects to the homepage
   function userLogout(req, res, next) {
     if (req.isAuthenticated()) {
       req.logout()
-      req.flash("info", "You are not signed up")
+      req.flash("info", "Thanks again! For signing up the pledge! You have been successfully logged out")
       res.redirect("/")
     }
   }

@@ -3,13 +3,15 @@ html
     block head
     //- some stylesheets for the layout
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
   body
     // navigation bar
-    nav
+    nav.blue
       div(class="nav-wrapper")
-        a(href="/" class="brand-logo") The Peace Pledge
+        a(href="/" class="brand-logo white-text") The Peace Pledge
     //- page specific content
-    block content
+    .container
+      block content
     //- some scripts which are essential
     script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js")
     script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js")
