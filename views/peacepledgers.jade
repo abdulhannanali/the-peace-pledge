@@ -1,0 +1,26 @@
+extends ./layouts/layout.jade
+
+block head
+  title="Pledgers with you included"
+
+block styles
+  link(rel="stylesheet" href="//lipis.github.io/flag-icon-css/css/flag-icon.css")
+  
+block content
+  .row
+    h3 #[span(class="green-text") Thanks alot for signing up!]
+  .row
+    h4 #[span(class="brown-text") Peace pledgers who have signed up to this pledge till now]
+  .row
+    .col.s12
+      each user in users
+        .card-panel.grey.lighten-5.z-depth-2
+          .row
+            .col.s2
+              img.circle(src="//www.gravatar.com/avatar/#{user.hash}?d=retro")
+            .col.s8
+              h5. 
+                #[a(href="/user/#{user.id}") #{user.profile.name}]
+              h6.
+                He is awesome and lives in #{user.profile.country} #[span(class="flag-icon flag-icon-#{user.profile.country}")]
+      

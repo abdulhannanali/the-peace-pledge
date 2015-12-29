@@ -1,0 +1,27 @@
+extends ./layouts/layout.jade
+
+block content
+  .row
+    .col.s12
+      .card.amber.lighten-5
+        .card-content
+          h2.
+            #[i(class="material-icons") warning] 404! This place doesn't exist.
+  if !user
+    .row
+      .col.s12
+        .card.green.lighten-4
+          .card-content.
+            #[i(class="material-icons") CLICK #[a(href="/signup") HERE] TO SIGNUP FOR THE PLEDGE]
+  .row
+    .col.s12
+      .card.blue
+        .card-content
+          h5 HELP US SPREAD THE MOVEMENT BY SHARING IT TO OTHERS
+    //- .col.s12
+    //-   .card.amber.lighten-4
+    //-     .card-content
+    //-       h3.
+    //-         Help us by spreading this movement.
+    //-     .row
+    //-       include ./includes/share.jade

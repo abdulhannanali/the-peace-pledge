@@ -1,4 +1,41 @@
 extends ./layouts/layout.jade
 
+block head
+  title Login Page for peace lovers
+  style.
+    .world-peace {
+      margin-top: 30px;
+    }
+
 block content
-  
+  if info[0]
+    .row
+      .card-panel.light-green
+        h6=info[0]
+  if error[0]
+    .row
+      .card-panel.red
+        h5.black-text.
+          #[i(class="material-icons") error]  #{error[0]}
+  .row
+    .col.m10.s12
+      h1 #[span(class="green-text") Welcome] back you #[span(class="blue-text") peace] #[span(class="pink-text") lover]
+    .col.m2.s12
+      img.responsive-img.world-peace(src="//i.imgur.com/oUaYpJo.png" alt="world peace" width="240" height="140")
+  .row
+    form(method="POST" action="/login")
+      .input-field
+        input(type="email" class="validate" name="email")
+        label(for="email" data-success="email looks good") Enter your email here
+      .input-field
+        input(type="password" name="password" min="6" max="50")
+        label(for="password") Enter your password right here
+      .input-field
+        button.btn.waves-effect.waves-light #[i(class="material-icons left") lock_open] Enter the peaceful world
+  .row
+    .col.s12
+      .card-panel.indigo.lighten-4
+        .row
+          h5 Haven't Signed up for this pledge yet?
+        .row
+          a(href="/signup").btn.waves-effect.waves-dark.light-green Click here to sign up for this pledge

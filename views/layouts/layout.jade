@@ -4,6 +4,7 @@ html
     //- some stylesheets for the layout
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css")
     link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    block styles
   body
     // navigation bar
     nav.blue
@@ -12,7 +13,9 @@ html
         ul#nav-mobile.right.hide-on-med-and-down
           if user
             li
-              a(href="/user/#{user.id}") Logged In as #{user.email}
+              a(href="/peacepledgers") View all the other peace pledgers
+            li
+              a(href="/user/#{user.id}") Logged in as #{user.email}
             li
               a(href="/logout") Logout
           else
