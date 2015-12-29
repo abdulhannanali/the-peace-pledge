@@ -26,7 +26,7 @@ if (process.env.NODE_ENV == 'development') {
 }
 else if (process.env.NODE_ENV == 'production') {
   app.use(morgan('combined', {}))
-  // app.use(httpsSecure)
+  app.use(httpsSecure)
 }
 else {
   throw new Error('NODE_ENV not specified')
@@ -126,7 +126,7 @@ app.use(require('./routes/user.routes'))
 // middleware to make all the requests the url secure by redirecting them
 // to https
 function httpsSecure(req, res, next) {
-  var protoUsed = req.headers["x-forwarded-proto"] || req.protocol
+  var protoUsed = req.headers["x-forwarded-proto"]
   if (protoUsed == "http") {
     console.log(protoUsed)
     var redirectUrl = `https://${req.get('host')}${req.originalUrl}`
