@@ -5,6 +5,13 @@ block content
     .col.s12
       h1 Sign up to the #[span(class="pink-text") peace pledge] cos #[span(class="green-text") united] we #[span(class="blue-text") stand]!
       //- img(src="https://i.imgur.com/NNbQNx2.png" width="140" height="120")
+  if validationErrors[0]
+    .row
+      .card-panel.cyan.lighten-3
+        span.red-text
+          each error in validationErrors
+            p
+              h5 #[i(class="material-icons red-text") error] #{error.msg}
   .row
     form(method="POST" action="/signup")
       .row
@@ -28,7 +35,7 @@ block content
           label(for="imageUrl") Image Url (optional)
       .row
         .input-field
-          select
+          select(name="country")
             each country in countries
               option(value="#{country.Code}")=country.Name
           label Country
