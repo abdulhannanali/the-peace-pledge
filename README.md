@@ -34,10 +34,10 @@ The server listens by default on localhost:3000 but you can change it by configu
 
 #### Some screenshots of the app
 - [Index Main Page](docs/assets/screenshots/index.png)
-- [Login Page](docs/assets/screeenshots/login.png)
+- [Login Page](docs/assets/screenshots/login.png)
 - [Peace Pledgers Page](docs/assets/screenshots/pledgers.png)
 - [Signup page](docs/assets/screenshots/signup.png)
-- [User page](docs/assets/screeenshots/user.png)
+- [User page](docs/assets/screenshots/user.png)
 
 
 #### LICENSE
