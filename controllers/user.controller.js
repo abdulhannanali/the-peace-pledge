@@ -14,12 +14,14 @@ module.exports = function () {
 
   // getting the login page
   function getLogin(req, res, next) {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
       return res.redirect("/")
     }
-    res.render("login", {
-      user: req.user
-    })
+    else {
+      res.render("login", {
+        user: req.user
+      })
+    }
   }
 
   // authenticate and submit a login here
@@ -34,18 +36,46 @@ module.exports = function () {
 
   // controller for signing up the new user and redirecting the user
   function postSignup(req, res, next) {
+    // perform all the validations
+    req.checkBody('email', "No email provided")
+      .notEmpty()
+      .withMessage("Invalid Email Entered").isEmail()
+      .withMessage("Email must be between 6 and 50 characters in length").isLength(6, 50)
+
+    req.checkBody('password', "No password provided").notEmpty()
+      .withMessage("password must be between 8 and 23 characters in length").isLength(8, 23)
+
+    req.checkBody('name', "No name provided").notEmpty()
+    req.checkBody('name', "Name can be atmost 50 characters in length").isLength(0, 50)
+    req.checkBody('name', "Name can only contain letters").isAlpha()
+
+    req.checkBody('country', "No country provided")
+      .notEmpty()
+
+    var errors = req.validationErrors()
+    if (errors) {
+      req.flash("validationErrors", errors)
+      console.error(errors)
+      return res.redirect("/signup")
+    }
+
     if (req.user) {
+      console.log(req.user)
       res.redirect("/")
     }
     else {
       User.findOne({email: req.body.email}, function (error, user) {
         if (error) return next(error)
         if (!user) {
-          var user = new User({email: req.body.email, password: req.body.password})
-          user.save().then(function (data) {
-            if (data) {
-              console.log(data)
-            }
+          var user = new User({
+            email: req.body.email,
+            password: req.body.password,
+            "profile.name": req.body.name,
+            "profile.country": req.body.country,
+          })
+
+          user.save(function (err, result) {
+            console.log(result)
           })
         }
         else {
@@ -61,7 +91,8 @@ module.exports = function () {
     if (!req.isAuthenticated()) {
       res.render("signup", {
         user: req.user,
-        countries: countryCodes
+        countries: countryCodes,
+        validationErrors: req.flash("validationErrors")
       })
     }
     else {
