@@ -1,7 +1,6 @@
-var router = require('express').Router()
+const router = require('express').Router()
+const indexController = require("../controllers/index.controllers")()
 
-router.get("/login", function (req, res, next) {
-  console.log(req)
-})
+router.get("/", indexController.getIndex)
 
 module.exports = router
