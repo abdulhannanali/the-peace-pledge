@@ -6,10 +6,14 @@
 
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
+const fs = require('fs')
+
+const countryCodes = JSON.parse(fs.readFileSync("./data/viewsData/countrycodes.json", "utf-8"))
 
 const SALT_WORK_FACTOR = 10
 
 var userSchema = mongoose.Schema({
+
     email: {
       type: String,
       unique: true,
@@ -23,10 +27,11 @@ var userSchema = mongoose.Schema({
     },
 
     profile: {
-    name: { type: String, default: '' },
-    country: {type: String, default: ''}
-  }
-
+      name: { type: String, required: true},
+      country: {type: String, required: true, enum: countryCodes.map((value) => value.Code)},
+      imageUrl: {type: String}
+    },
+    timestamps: {type: Date}
 })
 
 // hash the password before saving
