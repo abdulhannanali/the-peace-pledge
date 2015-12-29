@@ -13,9 +13,13 @@ router.post("/signup", userController.postSignup)
 router.get("/login", userController.getLogin)
 router.post("/login", passport.authenticate("local", {
   failureRedirect: "/login",
-  failureFlash: true
-}), userController.postLogin)
+  failureFlash: true,
+  successRedirect: "/peacepledgers",
+  successFlash: true
+}))
 
 router.get("/logout", userController.userLogout)
+
+router.get("/user/:id", userController.getUserInfo)
 
 module.exports = router

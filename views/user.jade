@@ -1,0 +1,21 @@
+extends ./layouts/layout.jade
+
+block styles
+  link(rel="stylesheet" href="//lipis.github.io/flag-icon-css/css/flag-icon.css")
+  link(rel="stylesheet" href="//lipis.github.io/flag-icon-css/assets/docs.css")
+block content
+  .row
+    .card.teal.accent-2
+     .card-content.black-text
+      .row
+        .col.s2
+          img.responsive-img.circle(src=" //www.gravatar.com/avatar/#{user.hash}?d=retro&s=140")
+        .col.s10
+          h4 #{user.profile.name}
+          //- h5 He lives in #{user.profile.country} #[span(class="flag flag-icon flag-icon-#{user.profile.country}")]
+          h5 We #[i(class="material-icons red-text") favorite] this human and welcome this human with open hearts
+          h6 #{user.profile.name}'s email is #{user.email}
+    .row
+      .col.s12
+        .card-panel.light-green.center
+            h4 #{user.profile.name} lives in #[span(class="flag-icon flag-icon-#{user.profile.country}")]

@@ -7,6 +7,7 @@
 const User = require("../models/user")
 const passport = require('passport')
 const fs = require('fs')
+const crypto = require('crypto')
 
 const countryCodes = JSON.parse(fs.readFileSync("./data/viewsData/countrycodes.json", "utf-8"))
 
@@ -14,25 +15,20 @@ module.exports = function () {
 
   // getting the login page
   function getLogin(req, res, next) {
+    // console.log(req.flash("error"))
     if (req.isAuthenticated()) {
+      req.flash("info", "you are already logged in")
       return res.redirect("/")
     }
     else {
       res.render("login", {
-        user: req.user
+        user: req.user,
+        info: req.flash("info"),
+        error: req.flash("error")
       })
     }
   }
 
-  // authenticate and submit a login here
-  function postLogin(req, res, next) {
-    if (req.user) {
-      res.redirect("/", {})
-    }
-    else {
-      res.redirect("/login")
-    }
-  }
 
   // controller for signing up the new user and redirecting the user
   function postSignup(req, res, next) {
@@ -47,7 +43,6 @@ module.exports = function () {
 
     req.checkBody('name', "No name provided").notEmpty()
     req.checkBody('name', "Name can be atmost 50 characters in length").isLength(0, 50)
-    req.checkBody('name', "Name can only contain letters").isAlpha()
 
     req.checkBody('country', "No country provided")
       .notEmpty()
@@ -59,8 +54,10 @@ module.exports = function () {
       return res.redirect("/signup")
     }
 
+    req.sanitizeBody("email").normalizeEmail()
+
     if (req.user) {
-      console.log(req.user)
+      req.flash("info", "You are already signed in as " + req.user.email)
       res.redirect("/")
     }
     else {
@@ -72,10 +69,13 @@ module.exports = function () {
             password: req.body.password,
             "profile.name": req.body.name,
             "profile.country": req.body.country,
+            hash: hashGenerator(req.body.email)
           })
 
           user.save(function (err, result) {
-            console.log(result)
+            if (err) return next(err)
+            req.flash("info", "Congrats! You have signed up successfully. Now Login to your account!")
+            return res.redirect("/")
           })
         }
         else {
@@ -84,6 +84,18 @@ module.exports = function () {
       })
     }
   }
+
+  // generates a hash from email
+  function hashGenerator(email) {
+    if (email) {
+      var hash = crypto.createHash("md5").update(email).digest("hex")
+      return hash
+    }
+    else {
+      return ""
+    }
+  }
+
 
 
   // controller for rendering the signup page
@@ -105,9 +117,49 @@ module.exports = function () {
   // logouts the user if authenticated or not and redirects to the homepage
   function userLogout(req, res, next) {
     if (req.isAuthenticated()) {
+      var user = req.user
       req.logout()
-      req.flash("info", "Thanks again! For signing up the pledge! You have been successfully logged out")
-      res.redirect("/")
+      res.render("logout", {
+        loggedOut: user
+      })
+    }
+    else {
+      req.flash("info", "You need to login before logging out!")
+      res.redirect("/login")
+    }
+  }
+
+  // getUserInfo
+  // display the info a user
+  // authentication required
+  function getUserInfo(req, res, next) {
+
+    req.checkParams("id", "Invalid Object Id")
+      .notEmpty().isLength(0, 35)
+
+    var errors = req.validationErrors()
+    if (errors) {
+      return next()
+    }
+
+    if (req.isAuthenticated()) {
+      User.findOne({_id: req.params.id}, function (error, result) {
+        if (error) {
+          return next(error)
+        }
+        else if (!result) {
+          return next()
+        }
+        else {
+          res.render("user", {
+            user: result
+          })
+        }
+      })
+    }
+    else {
+      req.flash("info", "You need to be loggedin in order to view the user information")
+      res.redirect("/login")
     }
   }
 
@@ -115,7 +167,7 @@ module.exports = function () {
     getSignup: getSignup,
     postSignup: postSignup,
     getLogin: getLogin,
-    postLogin: postLogin,
-    userLogout: userLogout
+    userLogout: userLogout,
+    getUserInfo: getUserInfo
   }
 }
