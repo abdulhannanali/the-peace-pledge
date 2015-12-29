@@ -7,6 +7,7 @@
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const fs = require('fs')
+const crypto = require("crypto")
 
 const countryCodes = JSON.parse(fs.readFileSync("./data/viewsData/countrycodes.json", "utf-8"))
 
@@ -32,6 +33,12 @@ var userSchema = mongoose.Schema({
       imageUrl: {type: String}
     },
 
+    // md5 hash is required
+    hash:{
+      type: String,
+      required: true
+    },
+
     createdAt: {
       type: Date,
       default: Date.now()
@@ -41,6 +48,7 @@ var userSchema = mongoose.Schema({
       default: Date.now()
     }
 })
+
 
 // hash the password before saving
 userSchema.pre('save', function (next) {

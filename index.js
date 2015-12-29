@@ -9,9 +9,11 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const flash = require('express-flash')
+const favicon = require('serve-favicon')
+
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
-const flash = require('express-flash')
 
 const User = require('./models/user')
 const app = express()
@@ -66,7 +68,7 @@ passport.use(new LocalStrategy({
       }
       if (!user) {
         console.log('no user found')
-        return done(null, false, {message: 'Incorrect Username'})
+        return done(null, false, {message: 'The email is not registered! Please sign up!'})
       }
       user.comparePassword(password, function (error, isMatch) {
         if (error) {
@@ -76,7 +78,7 @@ passport.use(new LocalStrategy({
           return done(null, user)
         }
         else {
-          return done(null, false, {message: 'Incorrect Password'})
+          return done(null, false, {message: 'Your password is wrong peace lover'})
         }
       })
     })
@@ -84,12 +86,16 @@ passport.use(new LocalStrategy({
 
 
 
+// serve favicon
+app.use(favicon(__dirname + "/public/dove.png"))
+
 // bodyParser parsing
 app.use(bodyParser.json())
 app.use(bodyParser({extended: true}))
 // express session
 app.use(session({secret: 'world peace for life'}))
 app.use(flash())
+
 
 // setting up passportjs
 app.use(passport.initialize())
@@ -122,6 +128,20 @@ app.set('view engine', 'jade')
 app.use(require('./routes/index.router'))
 app.use(require('./routes/user.routes'))
 
+
+// not found middleware
+app.use(function (req, res, next) {
+  res.status(404)
+  res.render("notfound", {})
+})
+
+// error middleware
+app.use(function (error, req, res, next) {
+  console.error(error)
+  res.status(500)
+  res.render("error", {
+  })
+})
 
 // middleware to make all the requests the url secure by redirecting them
 // to https
