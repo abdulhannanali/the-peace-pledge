@@ -18,7 +18,7 @@ module.exports = function () {
   // shows all the other
   function getPledgers(req, res, next) {
     if (req.user && req.isAuthenticated()) {
-      User.find({}, function (error, users) {
+      User.find({}).sort({createdAt: "desc"}).exec(function (error, users) {
         res.render("peacepledgers", {
           user: req.user,
           users: users

@@ -23,4 +23,5 @@ block content
                 #[a(href="/user/#{user.id}") #{user.profile.name}]
               h6.
                 #{user.profile.name} is awesome and lives in #{user.profile.country} #[span(class="flag-icon flag-icon-#{user.profile.country}")]
-                
+              h6.
+                This human signed the pledge at #{user.createdAt}
