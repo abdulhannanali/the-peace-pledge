@@ -1,0 +1,18 @@
+{
+  "name": "node-authentication-form",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Hannan Ali (ali.abdulhannan@gmail.com)"
+  ],
+  "license": "GNU GPL v3",
+  "homepage": "https://github.com/abdulhannanali/node-authentication-application",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
