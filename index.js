@@ -132,15 +132,20 @@ app.use(require('./routes/user.routes'))
 // not found middleware
 app.use(function (req, res, next) {
   res.status(404)
-  res.render("notfound", {})
+  res.render("notfound", {
+    user: req.user
+  })
 })
+
 
 // error middleware
 app.use(function (error, req, res, next) {
   console.error(error)
   res.status(500)
   res.render("error", {
+    user: req.user
   })
+
 })
 
 // middleware to make all the requests the url secure by redirecting them
