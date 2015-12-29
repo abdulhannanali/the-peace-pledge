@@ -41,4 +41,4 @@ The server listens by default on localhost:3000 but you can change it by configu
 
 
 #### LICENSE
-GNU GPL v3.0 (see [LICENSE.md](LICENSE.md))
+GNU GPL v3.0 (see [LICENSE.md](LICENSE))
