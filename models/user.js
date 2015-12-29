@@ -31,7 +31,15 @@ var userSchema = mongoose.Schema({
       country: {type: String, required: true, enum: countryCodes.map((value) => value.Code)},
       imageUrl: {type: String}
     },
-    timestamps: {type: Date}
+
+    createdAt: {
+      type: Date,
+      default: Date.now()
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now()
+    }
 })
 
 // hash the password before saving
