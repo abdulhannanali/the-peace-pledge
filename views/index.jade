@@ -1,9 +1,26 @@
 extends ./layouts/layout.jade
 
+block styles
+  style.
+    .heart {
+      margin-top: 35px
+    }
+  
 block content
   .row
-    h1 #[span(class="brown-text") The] #[span(class="green-text") Peace] #[span(class="blue-text") Pledge]
-    h3 NO! TO WAR AND DISTRUST
+    .col.m10.s12
+      h1 #[span(class="brown-text") The] #[span(class="green-text") Peace] #[span(class="blue-text") Pledge]
+      h3 NO! TO WAR AND DISTRUST
+    .col.m2.s12
+      img.responsive-img.heart(src="http://i.imgur.com/NNbQNx2.png" alt="world heart" width="240" height="253")
+  if info[0]
+    .row
+      .card-panel.pink.lighten-4
+        p #{info[0]}
+  .row
+    .col.s12
+      .card-panel.green
+        h5.white-text #[span(class="brown-text") #{count}] people have pledged to this till now
   .row
     .col.s12
       .card.yellow.lighten-2
@@ -14,13 +31,15 @@ block content
           a(href="/signup") Sign up this pledge
           a(href="/peacepledgers") View the names of the pledge takers
   .row
-    .col.s6
-      .card.orange.accent-2
-        .card-content
-          span.card-title.green-text JOIN THIS PLEDGE
-          .center
-            a.waves-effect.waves-dark.light-green.accent-3.btn I WANT PEACE NOW
-    .col.s6
+    if !user
+      .col.m6.s12
+        .card.orange.accent-2
+          .card-content
+            span.card-title.green-text JOIN THIS PLEDGE
+            .center
+              a.waves-effect.waves-dark.light-green.accent-3.btn(href="/signup") I WANT PEACE NOW
+    
+    .col.m6.s12
       .card.lime.accent-3
         .card-content
           span.card-title.black-text Share this with fellow humans
