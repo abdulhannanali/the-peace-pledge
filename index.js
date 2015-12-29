@@ -11,21 +11,22 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const flash = require('express-flash')
 
 const User = require('./models/user')
-
 const app = express()
+
 
 // environment specific configurations
 if (process.env.NODE_ENV == 'development') {
   // using morgan development logger
   app.use(morgan('dev', {}))
-
   // using config.js file for setting up environment variables
   require('./config')()
 }
 else if (process.env.NODE_ENV == 'production') {
   app.use(morgan('combined', {}))
+  app.use(httpsSecure)
 }
 else {
   throw new Error('NODE_ENV not specified')
@@ -81,21 +82,30 @@ passport.use(new LocalStrategy({
     })
 }))
 
+
+
 // bodyParser parsing
 app.use(bodyParser.json())
+app.use(bodyParser({extended: true}))
 // express session
 app.use(session({secret: 'world peace for life'}))
+app.use(flash())
 
 // setting up passportjs
 app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.session({
+  resave: true,
+  saveUninitialized: true
+}))
 
 passport.serializeUser(function (user, done) {
+  console.log("serializing")
   done(null, user.id)
 })
 
 passport.deserializeUser(function (id, done) {
   User.findById(id, function (err, user) {
+    console.log("deserializing")
     done(err, user)
   })
 })
@@ -111,6 +121,19 @@ app.set('view engine', 'jade')
 // set up routers here
 app.use(require('./routes/index.router'))
 app.use(require('./routes/user.routes'))
+
+
+// middleware to make all the requests the url secure by redirecting them
+// to https
+function httpsSecure(req, res, next) {
+  var protoUsed = req.headers["x-forwarded-proto"] || req.protocol
+  if (protoUsed == "http") {
+    console.log(protoUsed)
+    var redirectUrl = `https://${req.get('host')}${req.originalUrl}`
+    console.log(redirectUrl)
+    res.redirect(redirectUrl)
+  }
+}
 
 // listening after all this fuss
 app.listen(PORT, HOST, function (error) {
