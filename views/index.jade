@@ -1,5 +1,30 @@
-head
-  link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css")
-body
-  h1 Welcome to the peace pledge
-  p This is the homepage of the peace pledge
+extends ./layouts/layout.jade
+
+block content
+  .row
+    h1 #[span(class="brown-text") The] #[span(class="green-text") Peace] #[span(class="blue-text") Pledge]
+    h3 NO! TO WAR AND DISTRUST
+  .row
+    .col.s12
+      .card.yellow.lighten-2
+        .card-content.black-text
+          span(class="card-title") Message to fellow humans         
+          include ./includes/message.jade
+        .card-action
+          a(href="/signup") Sign up this pledge
+          a(href="/peacepledgers") View the names of the pledge takers
+  .row
+    .col.s6
+      .card.orange.accent-2
+        .card-content
+          span.card-title.green-text JOIN THIS PLEDGE
+          .center
+            a.waves-effect.waves-dark.light-green.accent-3.btn I WANT PEACE NOW
+    .col.s6
+      .card.lime.accent-3
+        .card-content
+          span.card-title.black-text Share this with fellow humans
+          // AddToAny BEGIN
+          .center
+            include ./includes/share.jade
+            

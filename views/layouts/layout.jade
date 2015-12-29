@@ -9,9 +9,21 @@ html
     nav.blue
       div(class="nav-wrapper")
         a(href="/" class="brand-logo white-text") The Peace Pledge
+        ul#nav-mobile.right.hide-on-med-and-down
+          if user
+            li
+              a(href="/user/#{user.id}") Logged In as #{user.email}
+            li
+              a(href="/logout") Logout
+          else
+            li
+              a(href="/login") Login
+            li
+              a(href="/signup") Sign up for this pledge!
     //- page specific content
     .container
       block content
+    include ../includes/footer.jade
     //- some scripts which are essential
     script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js")
     script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js")
