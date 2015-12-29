@@ -26,7 +26,7 @@ if (process.env.NODE_ENV == 'development') {
 }
 else if (process.env.NODE_ENV == 'production') {
   app.use(morgan('combined', {}))
-  app.use(httpsSecure)
+  // app.use(httpsSecure)
 }
 else {
   throw new Error('NODE_ENV not specified')
